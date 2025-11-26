@@ -11,10 +11,5 @@ __pycache__/
 venv/
 .venv/
 
-# Data files
-*.csv
-*.parquet
-*.pkl
-
 # VS Code settings
 .vscode/
