@@ -1,0 +1,2 @@
+timestamp,num_users,num_features,star_features,planet_features,moon_features,prediction_range,mean_prediction,std_prediction
+2025-12-09T14:37:08.115585,120,22,7,4,10,"[1.0, 120.0]",5.970142077218597,1.6469346294758962
