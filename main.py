@@ -13,9 +13,9 @@ def home():
 def run_layer(layer_num: int):
     # Mapping request to your specific file names
     script_map = {
-        2: "Models/Layer2/Scripts/Trend_Model.py", 
-        3: "Models/Layer3/Scripts/Layer_3_Master_File.py",
-        4: "Models/Layer4/Scripts/Layer_4_Master_File.py"
+        2: "Models/Layer_2/Scripts/Trend_Model.py", 
+        3: "Models/Layer_3/Scripts/Layer_3_Master_File.py",
+        4: "Models/Layer_4/Scripts/Layer_4_Master_File.py"
     }
     
     if layer_num not in script_map:
