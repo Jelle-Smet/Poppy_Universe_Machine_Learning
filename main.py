@@ -3,6 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import subprocess
 import os
 import pandas as pd
+import uvicorn
 
 app = FastAPI(title="Poppy Universe ML Service")
 security = HTTPBearer()
@@ -23,7 +24,13 @@ CONFIG = {
     }
 }
 
+# --- HEALTH CHECK (Required for Hugging Face) ---
+@app.get("/")
+def read_root():
+    return {"status": "online", "message": "Poppy Universe ML Service is active"}
+
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    # This checks the HF_TOKEN secret you added to Hugging Face
     if credentials.credentials != os.getenv("HF_TOKEN"):
         raise HTTPException(status_code=403, detail="Invalid Token")
     return credentials.credentials
@@ -34,28 +41,34 @@ async def run_layer(layer_num: int, request: Request, token: str = Depends(verif
         raise HTTPException(status_code=404, detail="Layer not found")
     
     body = await request.json()
-    mode = body.get("mode", "cached") # 'run' or 'cached'
+    mode = body.get("mode", "cached") 
     layer = CONFIG[layer_num]
     
-    # 1. RUN MODEL (Only if Node.js said 'run')
+    python_output = ""
+    # 1. RUN MODEL (Only if mode is 'run')
     if mode == "run":
         script_path = os.path.join(os.path.dirname(__file__), layer["script"])
-        # We pass DATA_SOURCE=database so the Python script knows to hit Aiven
+        # We pass DATA_SOURCE=database so your Python scripts know to hit Aiven
         result = subprocess.run(["python", script_path], env={**os.environ, "DATA_SOURCE": "database"}, capture_output=True, text=True)
         if result.returncode != 0:
             return {"status": "error", "trace": result.stderr}
+        python_output = result.stdout
 
-    # 2. READ OUTPUT FILE (Always from Huggy's storage)
+    # 2. READ OUTPUT FILE (The CSV stored on Huggy)
     csv_path = os.path.join(os.path.dirname(__file__), layer["output"])
     if not os.path.exists(csv_path):
-        return {"status": "error", "message": "CSV output not found on cloud"}
+        return {"status": "error", "message": f"CSV not found at {layer['output']}"}
 
     df = pd.read_csv(csv_path)
-    # Convert CSV to list of objects (JSON format)
     data_json = df.to_dict(orient='records')
 
     return {
         "status": "success",
         "total_rows": len(df),
+        "output": python_output,
         "data": data_json
     }
+
+# --- STARTUP COMMAND (Required for Hugging Face) ---
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=7860)
