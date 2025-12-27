@@ -4,3 +4,5 @@ scikit-learn
 fastapi
 uvicorn
 python-multipart
+sqlalchemy
+mysql-connector-python
