@@ -1,53 +1,64 @@
+---
+title: Poppy Universe ML
+emoji: 🚀
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 <div style="display: flex; align-items: center; gap: 10px;">
-  <img src="../Images/Poppy_Universe_Logo.png" alt="Poppy Universe Logo" width="100" style="margin-top: -5px;"/>
   <h1>Poppy Universe - Machine Learning</h1>
 </div>
 
-> **Simulated datasets, MF & NN predictions, ready for the engine**
+> **Simulated datasets, MF & NN predictions, ready for the engine via FastAPI**
 
-This folder contains all **Machine Learning code** for the **Poppy Universe** project.  
-It goes from **user interaction data** to meaningful insights and predictions for the recommendation engine.
+This repository contains the **Machine Learning service** for the **Poppy Universe** project, hosted as a Dockerized API on Hugging Face Spaces. It processes user interaction data to provide meaningful insights and predictions for the recommendation engine.
 
 ---
 
-## 🚀 Purpose
+## 🚀 API Gateway (FastAPI)
 
-* Simulate user interactions (views, clicks, favorites) for moons, planets, and stars (different approaches for each layer).  
-* Compute **Layer 2 liking scores** per object.  
-* Run **Matrix Factorization (Layer 3)** and **Neural Network (Layer 4)** for category-level predictions.  
-* Generate outputs compatible for the recommendation engine.  
-* Use **hardcoded rules for simulations**, but once enough real data is collected, the same notebooks can process **actual user interactions**.
+This Space acts as a production API. The following endpoints are available to trigger the ML pipeline from a Node.js backend:
+
+* **`GET /`**: Health check to verify the service is online.
+* **`POST /run-layer/2`**: Triggers the Trend Model (Object Liking Scores).
+* **`POST /run-layer/3`**: Triggers the Matrix Factorization Master File.
+* **`POST /run-layer/4`**: Triggers the Neural Network Master File.
+
+---
+
+## 🏗️ Layer Explanations
+
+### 🌓 Layer 2 — Object Liking Scores
+Aggregates interactions (views, clicks, favorites) to compute a **total liking score** per object.
+- **Returns:** CSV with object-level scores: `trending_score`, `num_favorites`, etc.
+
+### 🚀 Layer 3 — Matrix Factorization
+Category-level prediction using MF to extract latent features from User × Category matrices.
+- **Focus:** Semantic patterns across star types, planet types, and moon parents.
+
+### 🌠 Layer 4 — Neural Network
+A from-scratch neural network capturing nonlinear patterns between users and celestial categories using tanh activations and backpropagation.
 
 ---
 
 ## 📂 Project Structure
 
 ```tree
-Machine_Learning/
-├── Data_Prep/                                  # Notebooks to create simulated datasets
-│   └── Data_Creation_Layer_x.ipynb
-├── Input_Data/                                 # Raw & simulated datasets
-│   ├── MF_Sematnic_Type_Interactions.csv           # Layer 3
-│   ├── NN_Semantic_Interactions.csv                # Layer 4
-│   └── Simulated_User_Interactions.csv             # Layer 2
-├── Models/                                     # MF and NN notebooks per layer
-│   ├── Layer2/                                     # Layer 2 notebooks
-│   │   └── Layer2_User_Scores.ipynb                    # Calculates object liking scores
-│   ├── Layer3/                                     # Layer 3 notebooks
-│   │   ├── Files                                       # Temp data diles
-│   │   ├── Layer3_MF_Moons.ipynb                       # Moons notebook
-│   │   ├── Layer3_MF_Planets.ipynb                     # Planets notebook
-│   │   ├── Layer3_MF_Stars.ipynb                       # Stars notebook
-│   │   └── Layer3_Master.ipynb                         # Combines output data from layer 3 notebooks.
-│   ├── Layer4/                                     # Layer 4 notebooks
-│   │   ├── Files
-│   │   ├── Layer4_NN_Moons.ipynb                       # Moons notebook
-│   │   ├── Layer4_NN_Planets.ipynb                     # Planets notebook
-│   │   ├── Layer4_NN_Stars.ipynb                       # Stars notebook
-│   │   └── Layer4_Master.ipynb                         # Combines output data from layer 4 notebooks.
-│   └── Plots/                                      # visualizations
-├── Output_Data/                                # Prediction outputs for the engine
-└── README.md                                   # This README
+.
+├── main.py              # FastAPI Application Gateway
+├── Dockerfile           # Docker configuration for Hugging Face
+├── requirements.txt      # Python dependencies
+├── Data_Prep/           # Notebooks to create simulated datasets
+├── Input_Data/          # Raw & simulated datasets (CSV)
+├── Models/              # Python Master Scripts and Notebooks
+│   ├── Layer2/
+│   ├── Layer3/
+│   ├── Layer4/
+│   └── Plots/           # Visualizations (LFS Tracked)
+├── Output_Data/         # Prediction outputs for the engine
+└── Files/               # Temporary processing files
 ```
 
 ## 🏗️ Layer Explanations
