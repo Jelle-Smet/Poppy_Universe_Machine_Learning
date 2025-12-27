@@ -12,7 +12,7 @@ def log(msg):
 log("=== Layer 4 Master NN Model started ===")
 
 DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
-input_temp_path = '../../Files/temp_interactions_L4.csv'
+input_temp_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions_L4.csv')
 
 # 1. Handle Input Data
 if DATA_SOURCE == "database":
@@ -48,16 +48,16 @@ run_nn_script('Moon_NN_Model.py')
 # 4. Load & Merge Predictions
 try:
     # Relative paths to the prediction files
-    star_df   = pd.read_csv('../Files/Layer4_Star_Predictions.csv')
-    planet_df = pd.read_csv('../Files/Layer4_Planet_Predictions.csv')
-    moon_df   = pd.read_csv('../Files/Layer4_Moon_Predictions.csv')
+    star_df   = pd.read_csv(os.path.join(os.path.dirname(__file__), '../Files/Layer4_Star_Predictions.csv'))
+    planet_df = pd.read_csv(os.path.join(os.path.dirname(__file__), '../Files/Layer4_Planet_Predictions.csv'))
+    moon_df   = pd.read_csv(os.path.join(os.path.dirname(__file__), '../Files/Layer4_Moon_Predictions.csv'))
 
     # Use merge to ensure User_IDs stay aligned correctly
     merged_df = star_df.merge(planet_df, on='User_ID', how='outer').merge(moon_df, on='User_ID', how='outer')
     merged_df = merged_df.fillna(0)
 
     # Save Final Data
-    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../Output_Data/Layer4_Final_Predictions.csv'))
+    output_path = os.path.join(os.path.dirname(__file__), '../../../Output_Data/Layer4_Final_Predictions.csv')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     merged_df.to_csv(output_path, index=False)
 

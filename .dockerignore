@@ -1,0 +1,22 @@
+# Python bytecode (prevents version conflicts)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment files (You don't want your local PC settings uploaded)
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Operating system junk
+.DS_Store
+Thumbs.db
+
+# Git files (Hugging Face handles git separately)
+.git
+.gitignore

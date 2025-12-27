@@ -28,7 +28,7 @@ if DATA_SOURCE == "database":
         sys.exit(1)
 else:
     print("Reading backup fictional CSV...")
-    data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Input_data/Simulated_User_Interactions.csv"))
+    data_path = os.path.join(os.path.dirname(__file__), "../../../Input_data/Simulated_User_Interactions.csv")
     interactions = pd.read_csv(data_path)
 
 # ---------------- PREP ----------------
@@ -70,7 +70,7 @@ features['trending_score'] = (
 # ---------------- OUTPUT ----------------
 top_per_type = features.sort_values('trending_score', ascending=False).groupby('Object_Type').head(100)
 
-output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Output_Data/Layer_2_Top_Trending_Per_Type.csv"))
+output_path = os.path.join(os.path.dirname(__file__), "../../../Output_data/Layer_2_Top_Trending_Per_Type.csv")
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 top_per_type.to_csv(output_path, index=False)
 

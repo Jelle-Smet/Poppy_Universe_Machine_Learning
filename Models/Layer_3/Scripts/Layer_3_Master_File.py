@@ -11,7 +11,7 @@ def log(msg):
 log("=== Layer 3 Master Model started ===")
 
 DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
-input_temp_path = '../../Files/temp_interactions.csv' # Temp file for sub-scripts to read
+input_temp_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv') # Temp file for sub-scripts to read
 
 # 1. Load Data
 if DATA_SOURCE == "database":
@@ -50,9 +50,9 @@ run_python_script('Moon_Matrix_Model.py')
 # 3. Load & Merge results
 try:
     # Adjusting paths to match your provided structure
-    sim_star_path   = '../Files/Layer3_Star_Predictions.csv'
-    sim_planet_path = '../Files/Layer3_Planet_Predictions.csv'
-    sim_moon_path   = '../Files/Layer3_Moon_Predictions.csv'
+    sim_star_path   = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Star_Predictions.csv')
+    sim_planet_path = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Planet_Predictions.csv')
+    sim_moon_path   = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Moon_Predictions.csv')
 
     star_df   = pd.read_csv(os.path.abspath(os.path.join(os.path.dirname(__file__), sim_star_path)))
     planet_df = pd.read_csv(os.path.abspath(os.path.join(os.path.dirname(__file__), sim_planet_path)))
@@ -62,7 +62,7 @@ try:
     merged_df = star_df.merge(planet_df, on='User_ID').merge(moon_df, on='User_ID')
 
     # Save final merged matrix
-    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../Output_Data/Layer_3_Final_Predictions.csv'))
+    output_path = os.path.join(os.path.dirname(__file__), '../../../Output_Data/Layer_3_Final_Predictions.csv')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     merged_df.to_csv(output_path, index=False)
     

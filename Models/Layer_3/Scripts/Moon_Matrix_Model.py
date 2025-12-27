@@ -8,12 +8,12 @@ DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
 
 if DATA_SOURCE == "database":
     # Path to temp file created by Master_Layer3.py
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv'))
+    input_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv')
     print(f"Moon Model: Reading real data from {input_path}")
     interactions = pd.read_csv(input_path)
 else:
     # Standalone/Fictional fallback
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv"))
+    input_path = os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv")
     print(f"Moon Model: Reading fictional data from {input_path}")
     interactions = pd.read_csv(input_path)
 
@@ -28,7 +28,7 @@ if moon_interactions.empty:
     print("No Moon interactions found. Skipping MF calculations.")
     u_ids = interactions['User_ID'].unique()
     dummy_df = pd.DataFrame({'User_ID': u_ids})
-    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Files/Layer3_Moon_Predictions.csv'))
+    output_path = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Moon_Predictions.csv')
     dummy_df.to_csv(output_path, index=False)
     sys.exit(0)
 

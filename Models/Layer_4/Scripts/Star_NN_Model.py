@@ -13,12 +13,12 @@ DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
 
 if DATA_SOURCE == "database":
     # Path to temp file created by Master_Layer4.py
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions_L4.csv'))
+    input_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions_L4.csv')
     print(f"Star NN: Reading real data from {input_path}")
     interactions = pd.read_csv(input_path)
 else:
     # Standalone/Fictional fallback
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Input_Data/NN_Semantic_Interactions.csv"))
+    input_path = os.path.join(os.path.dirname(__file__), "../../../Input_Data/NN_Semantic_Interactions.csv")
     print(f"Star NN: Reading fictional data from {input_path}")
     interactions = pd.read_csv(input_path)
 
@@ -33,7 +33,7 @@ if star_interactions.empty:
     print("No Star interactions found. Creating fallback CSV.")
     u_ids = interactions['User_ID'].unique()
     dummy_df = pd.DataFrame({'User_ID': u_ids})
-    output_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Files/Layer4_Star_Predictions.csv'))
+    output_file = os.path.join(os.path.dirname(__file__), '../Files/Layer4_Star_Predictions.csv')
     dummy_df.to_csv(output_file, index=False)
     sys.exit(0)
 
@@ -138,7 +138,7 @@ prediction_matrix = predictions.reshape(num_users, num_star)
 R_hat_df = pd.DataFrame(prediction_matrix, columns=star_encoder.inverse_transform(all_star))
 R_hat_df.insert(0, 'User_ID', user_encoder.inverse_transform(all_users))
 
-output_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Files/Layer4_Star_Predictions.csv'))
+output_file = os.path.join(os.path.dirname(__file__), '../Files/Layer4_Star_Predictions.csv')
 os.makedirs(os.path.dirname(output_file), exist_ok=True)
 R_hat_df.to_csv(output_file, index=False)
 

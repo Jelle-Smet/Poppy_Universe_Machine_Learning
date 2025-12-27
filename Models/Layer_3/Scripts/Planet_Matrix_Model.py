@@ -8,12 +8,12 @@ DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
 
 if DATA_SOURCE == "database":
     # Read the temp file created by the Master script
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv'))
+    input_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv')
     print(f"Planet Model: Reading real data from {input_path}")
     interactions = pd.read_csv(input_path)
 else:
     # Fallback to the original simulated CSV
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv"))
+    input_path = os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv")
     print(f"Planet Model: Reading fictional data from {input_path}")
     interactions = pd.read_csv(input_path)
 
@@ -74,7 +74,7 @@ cols = ['User_ID'] + [c for c in R_hat_df.columns if c != 'User_ID']
 R_hat_df = R_hat_df[cols]
 
 # 6) Save Predicted Matrix
-output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Files/Layer3_Planet_Predictions.csv'))
+output_path = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Moon_Predictions.csv')
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 R_hat_df.to_csv(output_path, index=False)
 

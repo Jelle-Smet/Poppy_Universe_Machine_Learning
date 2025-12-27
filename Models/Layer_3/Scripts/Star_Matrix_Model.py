@@ -11,12 +11,12 @@ DATA_SOURCE = os.getenv("DATA_SOURCE", "fictional")
 if DATA_SOURCE == "database":
     # Read the temp file created by the Master script
     # Path is relative to the Scripts folder where this runs
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv'))
+    input_path = os.path.join(os.path.dirname(__file__), '../../Files/temp_interactions.csv')
     print(f"Star Model: Reading real data from {input_path}")
     interactions = pd.read_csv(input_path)
 else:
     # Fallback to the original simulated CSV
-    input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv"))
+    input_path = os.path.join(os.path.dirname(__file__), "../../../Input_Data/MF_Semantic_Type_Interactions.csv")
     print(f"Star Model: Reading fictional data from {input_path}")
     interactions = pd.read_csv(input_path)
 
@@ -33,7 +33,7 @@ if star_interactions.empty:
     # Assuming User_ID exists in the original interactions
     u_ids = interactions['User_ID'].unique()
     dummy_df = pd.DataFrame({'User_ID': u_ids})
-    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Files/Layer3_Star_Predictions.csv'))
+    output_path = os.path.join(os.path.dirname(__file__), '../Files/Layer3_Moon_Predictions.csv')
     dummy_df.to_csv(output_path, index=False)
     sys.exit(0)
 
