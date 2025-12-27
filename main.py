@@ -12,15 +12,15 @@ security = HTTPBearer()
 CONFIG = {
     2: {
         "script": "Models/Layer_2/Scripts/Trend_Model.py",
-        "output": "Models/Layer_2/Output_Data/Layer_2_Top_Trending_Per_Type.csv"
+        "output": "Output_Data/Layer_2_Top_Trending_Per_Type.csv"
     },
     3: {
         "script": "Models/Layer_3/Scripts/Layer_3_Master_File.py",
-        "output": "Models/Layer_3/Output_Data/Layer_3_Final_Predictions.csv"
+        "output": "Output_Data/Layer_3_Final_Predictions.csv"
     },
     4: {
         "script": "Models/Layer_4/Scripts/Master_Layer4.py",
-        "output": "Models/Layer_4/Output_Data/Layer4_Final_Predictions.csv"
+        "output": "Output_Data/Layer4_Final_Predictions.csv"
     }
 }
 
