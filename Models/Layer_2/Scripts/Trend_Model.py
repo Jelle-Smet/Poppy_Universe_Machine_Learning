@@ -28,7 +28,10 @@ if DATA_SOURCE == "database":
         sys.exit(1)
 else:
     print("Reading backup fictional CSV...")
-    data_path = os.path.join(os.path.dirname(__file__), "../../../Input_data/Simulated_User_Interactions.csv")
+    # Build the path using the correct folder name: Input_Data
+    data_path = os.path.join(os.path.dirname(__file__), "../../../Input_Data/Simulated_User_Interactions.csv")
+
+    # Load the data
     interactions = pd.read_csv(data_path)
 
 # ---------------- PREP ----------------
@@ -70,8 +73,13 @@ features['trending_score'] = (
 # ---------------- OUTPUT ----------------
 top_per_type = features.sort_values('trending_score', ascending=False).groupby('Object_Type').head(100)
 
-output_path = os.path.join(os.path.dirname(__file__), "../../../Output_data/Layer_2_Top_Trending_Per_Type.csv")
+# Fix: Changed Output_data to Output_Data
+output_path = os.path.join(os.path.dirname(__file__), "../../../Output_Data/Layer_2_Top_Trending_Per_Type.csv")
+
+# Ensure the directory exists
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+# Save the file
 top_per_type.to_csv(output_path, index=False)
 
 print(f"CSV overwritten successfully at: {output_path}")
