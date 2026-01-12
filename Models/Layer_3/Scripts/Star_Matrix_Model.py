@@ -123,7 +123,7 @@ print(user_category_matrix.head())
 
 # %%
 # Only run this check if you want
-run_K_check = True  # set to False to skip
+run_K_check = False  # set to False to skip
 
 if run_K_check:
     R = user_category_matrix.drop('User_ID', axis=1).values
